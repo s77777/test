@@ -180,7 +180,7 @@ body{
 		    var itemData=new Object();
 		    var spans=ul[i].childNodes;
 		    itemData['name']=spans[0].innerHTML;
-		    itemData['decription']=spans[0].innerHTML;
+		    itemData['decription']=spans[1].innerHTML;
 		    addData.push(itemData);
 		}
 		return addData;
