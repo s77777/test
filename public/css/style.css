@@ -1,0 +1,9 @@
+
+.search {
+    position: absolute;
+    border: 1px solid #DEDEDE;
+    margin: 0 0 0 10px;
+    z-index: 99999;
+    background : #FFFFFF;
+    overflow: auto;
+}

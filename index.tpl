@@ -110,7 +110,7 @@ body{
 		<div class="cnt"><ul id="cnt"></ul></div>
 	</div>
 	<footer class="footer">
-		
+		<span class="badge badge-default badge-pill" rel="" title="Редактировать"><i class="material-icons">&#xE254;</i></span>
 	</footer>
 <script type="text/javascript">
     'use strict';
