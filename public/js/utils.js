@@ -1,16 +1,16 @@
 var d=document;
 var arrMsg={'error_update':'Во время сохранения произошла ошибка!',
-												'delOk':'Запись успешно удалена!',				
-												'saveOK':'Запись сохранена!',
-												'error_save':'Во время сохранения произошла ошибка!',
-												'notFound':'По Вашему запросу ничего не найдено, попробуйте ввести другой запрос!',
-												'errorRequest':'Ошибка запроса. Статус ',
-												'TaskNumber':'Задача № ',
-												'Prioritet':' Приоритет: <b>',
-												'Status':' Статус: <b>',
-												'cDate':' Дата создания: ',
-												'btnSave':'Сохранить',
-												'btnDel':'Удалить',
+	'delOk':'Запись успешно удалена!',				
+	'saveOK':'Запись сохранена!',
+	'error_save':'Во время сохранения произошла ошибка!',
+	'notFound':'По Вашему запросу ничего не найдено, попробуйте ввести другой запрос!',
+	'errorRequest':'Ошибка запроса. Статус ',
+	'TaskNumber':'Задача № ',
+	'Prioritet':' Приоритет: <b>',
+	'Status':' Статус: <b>',
+	'cDate':' Дата создания: ',
+	'btnSave':'Сохранить',
+	'btnDel':'Удалить',
 								};
 function JsonRequest(url,objdata,callback) {   
         var xhr = new XMLHttpRequest();
@@ -25,7 +25,7 @@ function getListSearch(e) {
     if (e.target.status === 200) {
         var result=JSON.parse(e.target.responseText);      
         if (result.length>0) {
-												removeLoadSearch();				
+            removeLoadSearch();				
             var select=d.getElementById('load_search');
             if (null==select) {
                 var attrs = {'id':'load_search','size': 6,'name':'load_search','class':'search'};
@@ -45,7 +45,7 @@ function getListSearch(e) {
             select.style.width=cor.width+'px';
             d.body.appendChild(select);
             select.querySelector('option:first-child').selected=true;
-												select.focus();
+            select.focus();
         }
     }
     else if (e.target.status !== 200) {
@@ -56,11 +56,11 @@ function getListSearch(e) {
 function getListResult(e) {
     e.preventDefault();
     if (e.target.status === 200) {
-								var result=JSON.parse(e.target.responseText);
-								if (result.success) {
-												console.log()
-												//window.location.assign(active.href);
-								}	
+	var result=JSON.parse(e.target.responseText);
+	if (result.success) {
+            console.log()
+            //window.location.assign(active.href);
+	}	
     }
     else if (e.target.status !== 200) {
         console.log(arrMsg.errorRequest + e.target.status);
@@ -88,48 +88,48 @@ function getListResultSearch(e) {
 }
 
 function sendReq(obj) {
-				if (obj.search!='') {				
-								JsonRequest('Index/getSearchList',obj,getListResultSearch);
-				}
+    if (obj.search!='') {				
+        JsonRequest('Index/getSearchList',obj,getListResultSearch);
+    }
 }
 
 function is_selected(e) {
-				var search=d.getElementById('search');
-				var oldValue=search.value;
-				search.value=e.target.value;
-				var obj={'search':''};
-				obj={'search':search.value};
-				if (e.type=='keyup' && e.keyCode==13) {
-								sendReq(obj);
-								return true;
-				} else if (e.type=='keyup' && e.keyCode==8) {
-								search.value=oldValue.substring(0, str.length - 1);
-								search.focus();
-				} else if (e.type=='click') {
-								sendReq(obj);
-								return true;
+    var search=d.getElementById('search');
+    var oldValue=search.value;
+        search.value=e.target.value;
+    var obj={'search':''};
+        obj={'search':search.value};
+    if (e.type=='keyup' && e.keyCode==13) {
+        sendReq(obj);
+        return true;
+    } else if (e.type=='keyup' && e.keyCode==8) {
+        search.value=oldValue.substring(0, str.length - 1);
+	search.focus();
+    } else if (e.type=='click') {
+	sendReq(obj);
+	return true;
     }
-				if (search.value=='') {
-								removeLoadSearch();
-								return true;
-				}
+    if (search.value=='') {
+        removeLoadSearch();
+        return true;
+    }
 }
 
 function Element(tag,attr) {
     var elem=document.createElement(tag);
     if (attr) {
-								for (var key in attr) {
+        for (var key in attr) {
             elem.setAttribute(key,
              (key!='style')?attr[key]:setStyle(attr[key])
             ); 
-								}
+        }
     }
-    function setStyle(args) {
-								var style=[];
-								for (var css in args) {
-								    style.push(css+':'+args[css])
-								}
-								return style.join(';');
+     function setStyle(args) {
+	var style=[];
+	for (var css in args) {
+            style.push(css+':'+args[css])
+	}
+	return style.join(';');
     }
     return elem;
 }
@@ -177,32 +177,32 @@ function addTask(e) {
 
 function addTag(e) {
    e.preventDefault();
-			var f = d.forms[0];
-			var divBlock=f.querySelector('div.form-group:last-of-type').cloneNode(true);
-			var arrId=divBlock.querySelectorAll('[id],[data]');
-			var label=divBlock.querySelector('label');
-			afor=label.getAttribute('for');
-			var oi=afor.split('-');
-			i=Number(oi[1])+1;
-			label.setAttribute('for',oi[0]+'-'+i);
-			arrId.forEach(function (item,n,arrId){
-								var arr=arrId[n].id.split('-');
-								var c=arr.length;
-								arr[c-1]=(oi[1]===arr[c-1])?i:0;
-								arrId[n].id=arr.join('-');
-								if (arr[1]=='none') {
-												divBlock.querySelector('[id="'+arrId[n].id+'"]').style.display='';				
-								} else if (arr[1]=='visible') {
-												divBlock.querySelector('[id="'+arrId[n].id+'"]').style.display='none';
-								} else if (undefined!=arrId[n].value) {
-								    arrId[n].value='';
-								}
-			});
-			var btn=divBlock.querySelectorAll('[role="button"]');
-       for (var i=0;i<btn.length;i++) {
-            btn[i].addEventListener('click',Action);
-        }
-			f.insertBefore(divBlock, f.querySelector('.btn-success'));
+    var f = d.forms[0];
+    var divBlock=f.querySelector('div.form-group:last-of-type').cloneNode(true);
+    var arrId=divBlock.querySelectorAll('[id],[data]');
+    var label=divBlock.querySelector('label');
+        afor=label.getAttribute('for');
+    var oi=afor.split('-');
+        i=Number(oi[1])+1;
+	label.setAttribute('for',oi[0]+'-'+i);
+    arrId.forEach(function (item,n,arrId){
+        var arr=arrId[n].id.split('-');
+        var c=arr.length;
+        arr[c-1]=(oi[1]===arr[c-1])?i:0;
+	arrId[n].id=arr.join('-');
+	if (arr[1]=='none') {
+            divBlock.querySelector('[id="'+arrId[n].id+'"]').style.display='';				
+        } else if (arr[1]=='visible') {
+            divBlock.querySelector('[id="'+arrId[n].id+'"]').style.display='none';
+	} else if (undefined!=arrId[n].value) {
+            arrId[n].value='';
+	}
+    });
+    var btn=divBlock.querySelectorAll('[role="button"]');
+    for (var i=0;i<btn.length;i++) {
+        btn[i].addEventListener('click',Action);
+    }
+    f.insertBefore(divBlock, f.querySelector('.btn-success'));
 }
 
 function deleting(e) {
@@ -218,62 +218,60 @@ function removeLoadSearch() {
 }
 
 function Action(e) {
-				e.preventDefault();
+    e.preventDefault();
     var Data=new Object();
-				var a = e.target.id.split('-');
-console.log(a);				
-				if (a[1]=='picklist') {
-								window.location.assign("/");
-				} else if (a[1]=='delTask' || a[1]=='delTaskTag') {
-											Data['id']=(a[3])?a[3]:taskid;
-											Data['table']=a[0];
-								JsonRequest("/Task/deleteTask",Data,function(e){	
-												if (e.target.status === 200) {
-																var result=JSON.parse(e.target.responseText);
-																if (result.success) {
-																				alert(arrMsg.delOk);
-																				window.location.assign('/');
-																}	else {
-																				alert(arrMsg.error_update);				
-																}
-								    }
-								});
-				} else if (a[1]=='edit') {
-												a[1]='none';
-												setStyleDisplay(a.join('-'),'');
-												a[1]='visible'
-												setStyleDisplay(a.join('-'),'none');
-				} else if (a[1]=='save' || a[1]=='update')  {
-												Data={'id':taskid};
-												var id=a[0]+'-'+a[2]+((a[3])?('-'+a[3]):'');
-												var value=d.getElementById(id).value;
-												Data['field']=new Object;
-												Data['field'][a[2]]=value;
-												Data['id']=(a[3])?a[3]:taskid;
-											 Data['table']=a[0];												
-												Data['mode']=a[1];
-console.log(Data);												
-												JsonRequest("/Task/saveTask",Data,function(e){	
-																if (e.target.status === 200) {
-																			var result=JSON.parse(e.target.responseText);
-																			if (result.success) {
-																								a[1]='visible';
-																								id=a.join('-');
-																								setStyleDisplay(id,'');
-																								a[1]='show';
-																								id=a.join('-');
-																								d.getElementById(id).textContent=value;
-																								a[1]='none';
-																								id=a.join('-');
-																								setStyleDisplay(id,'none');																								
-																			}	else {
-																								alert(arrMsg.error_save);				
-																			}
-																}
-												});												
-								}
+    var a = e.target.id.split('-');
+    if (a[1]=='picklist') {
+	window.location.assign("/");
+    } else if (a[1]=='delTask' || a[1]=='delTaskTag') {
+	Data['id']=(a[3])?a[3]:taskid;
+	Data['table']=a[0];
+	JsonRequest("/Task/deleteTask",Data,function(e){	
+            if (e.target.status === 200) {
+                var result=JSON.parse(e.target.responseText);
+		if (result.success) {
+                    alert(arrMsg.delOk);
+                    window.location.assign('/');
+		} else {
+                    alert(arrMsg.error_update);				
+		}
+            }
+        });
+    } else if (a[1]=='edit') {
+	a[1]='none';
+	setStyleDisplay(a.join('-'),'');
+	a[1]='visible'
+	setStyleDisplay(a.join('-'),'none');
+    } else if (a[1]=='save' || a[1]=='update')  {
+	Data={'id':taskid};
+	var id=a[0]+'-'+a[2]+((a[3])?('-'+a[3]):'');
+	var value=d.getElementById(id).value;
+	Data['field']=new Object;
+	Data['field'][a[2]]=value;
+	Data['id']=(a[3])?a[3]:taskid;
+	Data['table']=a[0];												
+	Data['mode']=a[1];
+        JsonRequest("/Task/saveTask",Data,function(e){	
+            if (e.target.status === 200) {
+		var result=JSON.parse(e.target.responseText);
+		if (result.success) {
+                    a[1]='visible';
+                    id=a.join('-');
+                    setStyleDisplay(id,'');
+                    a[1]='show';
+                    id=a.join('-');
+                    d.getElementById(id).textContent=value;
+                    a[1]='none';
+                    id=a.join('-');
+                    setStyleDisplay(id,'none');																								
+                } else {
+                    alert(arrMsg.error_save);				
+		}
+            }
+	});												
+    }
 }
 
 function setStyleDisplay(id,style) {
-			d.getElementById(id).style.display=style;
+    d.getElementById(id).style.display=style;
 }
